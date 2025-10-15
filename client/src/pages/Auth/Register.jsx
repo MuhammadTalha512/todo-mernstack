@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Input, Row } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import Toastify from "../../components/message"; 
+import Toastify from "../../components/message";
 
 const initialState = {
   firstName: "",
@@ -10,6 +10,9 @@ const initialState = {
   password: "",
   confirmPassword: "",
 };
+
+const URL = import.meta.env.VITE_API_URL;
+console.log(" URL==>", URL);
 
 const Register = () => {
   const [state, setState] = useState(initialState);
@@ -39,9 +42,10 @@ const Register = () => {
     }
 
     setIsProcessing(true);
+    const URL = import.meta.env.VITE_API_URL;
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_END_POINT}/api/auth/register`, {
+      const res = await fetch(`${URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -65,7 +69,7 @@ const Register = () => {
         }
 
         setState(initialState);
-        navigate("/"); 
+        navigate("/");
       } else {
         Toastify(data.message || "Registration failed", "error");
       }

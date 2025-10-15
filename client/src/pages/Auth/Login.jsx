@@ -26,9 +26,10 @@ const Login = () => {
     if (!password) return Toastify("Password is required", "error");
 
     setIsProcessing(true);
+    const URL = import.meta.env.VITE_API_URL;
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_END_POINT}/api/auth/login`, {
+      const res = await fetch(`${URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
