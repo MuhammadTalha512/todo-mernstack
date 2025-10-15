@@ -20,7 +20,7 @@ const All = () => {
 
 
   useEffect(() => {
-    axios.get(`${URL}/readTodos`)
+    axios.get(`${process.env.REACT_APP_API_END_POINT}/readTodos`)
       .then((res) => {
       const {data} = res
       setDocuments(data)      
@@ -36,7 +36,7 @@ const All = () => {
 
   const handleEdit =(todo)=>{
     console.log('todo for edit' )
-    axios.post(`${URL}/updateTodo`, todo)
+    axios.post(`${process.env.REACT_APP_API_END_POINT}/updateTodo`, todo)
       .then((res) => {
         console.log('res', res)
         message.success('Todo Updated successfully', 'success');
@@ -45,7 +45,7 @@ const All = () => {
   }
   const handleDelete =(todo)=>{
     console.log('todo for delete' )
-    axios.post(`${URL}/deleteTodo`, todo)
+    axios.post(`${process.env.REACT_APP_API_END_POINT}/deleteTodo`, todo)
       .then((res) => {
         console.log('res', res)
         if(res.data === "Todo Deleted"){

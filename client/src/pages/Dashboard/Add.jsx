@@ -32,7 +32,7 @@ const Add = () => {
 
     const todoData = { title, location, description,status:"Incompleted" };
 
-    axios.post(`${URL}/createTodo`, todoData)
+    axios.post(`${process.env.REACT_APP_API_END_POINT}/createTodo`, todoData)
       .then((res) => {
         console.log('Todo Added:', res.data);
         Toastify('Todo added successfully', 'success');
