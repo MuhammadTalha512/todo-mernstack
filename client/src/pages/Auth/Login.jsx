@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Input, Row } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import Toastify from "../../components/message"; // your toast message helper
+import Toastify from "../../components/message";
+import { useAuthContext } from "../../contexts/AuthContext";
+import axios from "axios";
 
 const initialState = {
   email: "",
@@ -9,6 +11,8 @@ const initialState = {
 };
 
 const Login = () => {
+  const { setContextState } = useAuthContext();
+
   const [state, setState] = useState(initialState);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
@@ -29,33 +33,31 @@ const Login = () => {
     const URL = import.meta.env.VITE_API_URL;
 
     try {
-      const res = await fetch(`${URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const res = await axios.post(`${URL}/api/auth/login`, {
+        email,
+        password,
       });
 
-      const data = await res.json();
+      const data = res.data;
       setIsProcessing(false);
 
-      if (res.ok) {
-        Toastify(data.message || "Login successful", "success");
+      Toastify(data.message || "Login successful", "success");
+      setContextState((s) => ({ ...s, isAuth: true }));
 
-        // Save token and user info
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-        }
-
-        setState(initialState);
-        navigate("/"); 
-      } else {
-        Toastify(data.message || "Invalid credentials", "error");
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
       }
+
+      setState(initialState);
+      navigate("/");
     } catch (error) {
-      console.error("Login error:", error);
-      Toastify("Something went wrong. Please try again.", "error");
       setIsProcessing(false);
+      console.error("Login error:", error);
+      const message =
+        error.response?.data?.message ||
+        "Invalid credentials or network issue.";
+      Toastify(message, "error");
     }
   };
 

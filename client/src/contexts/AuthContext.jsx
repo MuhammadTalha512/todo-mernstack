@@ -5,7 +5,7 @@ const AuthContext = createContext();
 const initialState = { isAuth: false, user: null };
 
 const AuthContextProvider = ({ children }) => {
-  const [state, setState] = useState(initialState);
+  const [state, setContextState] = useState(initialState);
   const [isAppLoading, setIsAppLoading] = useState(true);
 
   const UserProfile = useCallback(() => {
@@ -13,12 +13,12 @@ const AuthContextProvider = ({ children }) => {
     const storedUser = localStorage.getItem("user");
 
     if (storedToken && storedUser) {
-      setState({
+      setContextState({
         isAuth: true,
         user: JSON.parse(storedUser),
       });
     } else {
-      setState(initialState);
+      setContextState(initialState);
     }
   }, []);
   
@@ -32,7 +32,7 @@ const AuthContextProvider = ({ children }) => {
       if (data?.token && data?.user) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        setState({ isAuth: true, user: data.user });
+        setContextState({ isAuth: true, user: data.user });
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -44,7 +44,7 @@ const AuthContextProvider = ({ children }) => {
       if (data?.token && data?.user) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        setState({ isAuth: true, user: data.user });
+        setContextState({ isAuth: true, user: data.user });
       }
     } catch (error) {
       console.error("Register error:", error);
@@ -54,12 +54,12 @@ const AuthContextProvider = ({ children }) => {
   const handleLogout = useCallback(() => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    setState(initialState);
+    setContextState(initialState);
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{Authstate: state,setState,isAppLoading,handleLogin,handleRegister,handleLogout,}}>
+      value={{Authstate: state,setContextState,isAppLoading,handleLogin,handleRegister,handleLogout,}}>
       {children}
     </AuthContext.Provider>
   );
