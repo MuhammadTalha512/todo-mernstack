@@ -11,8 +11,8 @@ const initialState = {
   confirmPassword: "",
 };
 
-const URL = import.meta.env.VITE_API_URL;
-console.log(" URL==>", URL);
+// const URL = import.meta.env.VITE_API_URL;
+// // console.log(" URL==>", URL);
 
 const Register = () => {
   const [state, setState] = useState(initialState);
