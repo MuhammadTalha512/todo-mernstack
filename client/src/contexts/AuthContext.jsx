@@ -7,12 +7,7 @@ const initialState = { isAuth: false, user: null };
 const AuthContextProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
   const [isAppLoading, setIsAppLoading] = useState(true);
-  
-  useEffect(() => {
-    UserProfile();
-    setIsAppLoading(false);
-  }, [UserProfile]);
- 
+
   const UserProfile = useCallback(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
@@ -27,6 +22,10 @@ const AuthContextProvider = ({ children }) => {
     }
   }, []);
   
+  useEffect(() => {
+    UserProfile();
+    setIsAppLoading(false);
+  }, [UserProfile]);
   
   const handleLogin = async (data) => {
     try {
