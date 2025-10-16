@@ -1,5 +1,5 @@
-require("dotenv").config();
 const express = require("express");
+require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
@@ -18,7 +18,6 @@ mongoose
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-app.use("/api/auth", authRoutes);
 
 app.post("/createTodo", async (req, res) => {
   try {
@@ -55,6 +54,7 @@ app.post("/deleteTodo", async (req, res) => {
   res.send("Todo Deleted");
 });
 
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(" Server running on port", PORT);
