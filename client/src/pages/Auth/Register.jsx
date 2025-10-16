@@ -65,7 +65,6 @@ const Register = () => {
       }
 
       setState(initialState);
-      navigate("/");
     } catch (error) {
       setIsProcessing(false);
       console.error("Registration error:", error);

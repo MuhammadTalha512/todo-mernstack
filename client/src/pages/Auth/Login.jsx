@@ -50,7 +50,6 @@ const Login = () => {
       }
 
       setState(initialState);
-      navigate("/");
     } catch (error) {
       setIsProcessing(false);
       console.error("Login error:", error);
