@@ -5,7 +5,7 @@
   "module": "commen.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index"
+    "start": "node index"
   },
   "author": "\"muhammad talha\"",
   "license": "ISC",
@@ -16,7 +16,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.6.1",
+    "mongoose": "^7.8.7",
     "nodemon": "^3.1.10"
   }
 }
