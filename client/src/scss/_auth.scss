@@ -1,11 +1,95 @@
-main.auth{
-display: flex;
-justify-content: center;
-align-items: center;
-background-color: #1d3557;
-.card{
+// main.auth{
+// display: flex;
+// justify-content: center;
+// align-items: center;
+// background-color: #1d3557;
+// .card{
+//     width: 100%;
+//     max-width: 450px;
+//   ;
+// }
+// }
+// main.add{
+// display: flex;
+// justify-content: center;
+// align-items: center;
+// background-color: #fff;
+// .card{
+//     width: 100%;
+//     max-width: 450px;
+//   ;
+// }
+// }
+
+main.auth,
+main.add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  padding: 20px;
+
+  &.auth {
+    background: linear-gradient(135deg, #1d3557, #457b9d);
+  }
+
+  &.add {
+    background: #f8fafc;
+  }
+
+  .card {
     width: 100%;
-    max-width: 450px;
-  ;
-}
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 16px;
+    // padding: 30px 25px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1d3557;
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    input,
+    textarea {
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      padding: 10px 12px;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        border-color: #457b9d;
+        box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.3);
+      }
+    }
+
+    button {
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      &.ant-btn-primary {
+        background: linear-gradient(135deg, #1d3557, #457b9d);
+        border: none;
+
+        &:hover {
+          background: linear-gradient(135deg, #457b9d, #1d3557);
+        }
+      }
+    }
+  }
 }

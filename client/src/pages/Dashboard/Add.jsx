@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Button, Col, Form, Input, Row } from "antd";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Toastify from "../../components/message";
+import Navbar from "../../components/Header/Navbar";
+import Footer from "../../components/Footer";
 
 const initialState = { title: "", location: "", description: "" };
 
 const Add = () => {
   const [state, setState] = useState(initialState);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [todos, setTodos] = useState([]); // store fetched todos
+  const [todos, setTodos] = useState([]);
   const navigate = useNavigate();
   const URL = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) =>
-    setState((s) => ({ ...s, [e.target.name]: e.target.value }));
+    setState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleAdd = async () => {
     let { title, location, description } = state;
@@ -28,94 +30,104 @@ const Add = () => {
     if (location.length < 3)
       return Toastify("Location must be at least 3 characters long", "error");
     if (description.length < 10)
-      return Toastify(
-        "Description must be at least 10 characters long",
-        "error"
-      );
+      return Toastify("Description must be at least 10 characters long", "error");
 
     setIsProcessing(true);
 
-    const todoData = { title, location, description, status: "Incompleted" };
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        Toastify("You must be logged in to add todos", "error");
+        return;
+      }
 
-    axios
-      .post(`${URL}/createTodo`, todoData)
-      .then((res) => {
-        console.log("Todo Added:", res.data);
-        Toastify("Todo added successfully", "success");
-        setTodos((prev) => [...prev, res.data.todo]);
-        setState(initialState);
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        Toastify("Error adding todo", "error");
-      })
-      .finally(() => setIsProcessing(false));
+      const todoData = {
+        title,
+        location,
+        description,
+        status: "Incompleted",
+      };
+
+      const res = await axios.post(`${URL}/api/todo/createTodo`, todoData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      Toastify("Todo added successfully", "success");
+      setTodos((prev) => [...prev, res.data.todo]);
+      setState(initialState);
+    } catch (err) {
+      console.error("Error adding todo:", err);
+      Toastify("Error adding todo", "error");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
-    <main className="auth">
-      <div className="card p-3 p-md-4">
-        <h2 className="text-center text-primary py-3">Add Todo</h2>
-        <Form layout="vertical">
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item label="Title">
-                <Input
-                  type="text"
-                  placeholder="Please enter your Title"
-                  value={state.title}
-                  name="title"
-                  onChange={handleChange}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item label="Location">
-                <Input
-                  type="text"
-                  placeholder="Please enter your Location"
-                  value={state.location}
-                  name="location"
-                  onChange={handleChange}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item label="Description">
-                <Input.TextArea
-                  type="text"
-                  placeholder="Please enter your Description"
-                  value={state.description}
-                  name="description"
-                  onChange={handleChange}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Button
-                type="primary"
-                loading={isProcessing}
-                block
-                onClick={handleAdd}
-              >
-                Add
-              </Button>
-            </Col>
-            <Col span={12}>
-              <Button
-                type="primary"
-                block
-                onClick={() => {
-                  navigate("/dashboard/all");
-                }}
-              >
-                All
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </div>
-    </main>
+    <>
+      <Navbar />
+      <main className="add">
+        <div className="card p-3 p-md-4">
+          <h2 className="text-center  py-1">Add Todo</h2>
+          <Form layout="vertical">
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item label="Title">
+                  <Input
+                    type="text"
+                    placeholder="Please enter your Title"
+                    value={state.title}
+                    name="title"
+                    onChange={handleChange}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item label="Location">
+                  <Input
+                    type="text"
+                    placeholder="Please enter your Location"
+                    value={state.location}
+                    name="location"
+                    onChange={handleChange}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item label="Description">
+                  <Input.TextArea
+                    placeholder="Please enter your Description"
+                    value={state.description}
+                    name="description"
+                    onChange={handleChange}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button
+                  type="primary"
+                  loading={isProcessing}
+                  block
+                  onClick={handleAdd}
+                >
+                  Add
+                </Button>
+              </Col>
+              <Col span={12}>
+                <Button
+                  type="default"
+                  block
+                  onClick={() => navigate("/dashboard/all")}
+                >
+                  All
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 };
 

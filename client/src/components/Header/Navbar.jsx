@@ -5,10 +5,9 @@ import { useAuthContext } from '../../contexts/AuthContext'
 const Navbar = () => {
 const {Authstate,handleLogout} = useAuthContext()
 const {isAuth} = Authstate
-console.log('isAuth', isAuth)
   return (
     <header>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav className="navbar navbar-expand-lg navbar-dark">
   <div className="container">
     <a className="navbar-brand">Todo Mern Stack</a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

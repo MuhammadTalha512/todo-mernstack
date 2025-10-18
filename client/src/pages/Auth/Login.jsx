@@ -62,8 +62,8 @@ const Login = () => {
 
   return (
     <main className="auth">
-      <div className="card p-3 p-md-4">
-        <h2 className="text-center text-primary py-3">Login</h2>
+      <div className="card p-3 p-md-4 p-sm-4">
+        <h2 className="text-center  py-3">Login</h2>
         <Form layout="vertical">
           <Row gutter={16}>
             <Col span={24}>

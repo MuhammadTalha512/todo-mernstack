@@ -78,7 +78,7 @@ const Register = () => {
   return (
     <main className="auth">
       <div className="card p-3 p-md-4">
-        <h2 className="text-center text-primary py-3">Register</h2>
+        <h2 className="text-center  py-3">Register</h2>
         <Form layout="vertical">
           <Row gutter={16}>
             <Col span={12}>

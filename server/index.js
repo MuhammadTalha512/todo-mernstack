@@ -1,9 +1,11 @@
 const express = require("express");
-// require("dotenv").config();
+require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
-const { TodoModel } = require("./models/Todos");
+const todoRoutes = require("./routes/todoRoutes");
+
+
 
 const app = express();
 const PORT = 8000;
@@ -19,42 +21,43 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 
-app.post("/createTodo", async (req, res) => {
-  try {
-    const todo = req.body;
-    const newTodo = new TodoModel(todo);
-    await newTodo.save();
-    res
-      .status(201)
-      .json({ message: "Todo created successfully", todo: newTodo });
-  } catch (error) {
-    console.error("Error saving todo:", error);
-    res.status(500).json({ message: "Internal Server Error", error });
-  }
-});
+// app.post("/createTodo", async (req, res) => {
+//   try {
+//     const todo = req.body;
+//     const newTodo = new TodoModel(todo);
+//     await newTodo.save();
+//     res
+//       .status(201)
+//       .json({ message: "Todo created successfully", todo: newTodo });
+//   } catch (error) {
+//     console.error("Error saving todo:", error);
+//     res.status(500).json({ message: "Internal Server Error", error });
+//   }
+// });
 
-app.get("/readTodos", async (req, res) => {
-  const todos = await TodoModel.find();
-  res.send(todos);
-});
+// app.get("/readTodos", async (req, res) => {
+//   const todos = await TodoModel.find();
+//   res.send(todos);
+// });
 
-app.post("/updateTodo", async (req, res) => {
-  const todo = req.body;
-  await TodoModel.findByIdAndUpdate(
-    todo._id,
-    { status: "Completed" },
-    { merge: true }
-  );
-  res.send("Todo updated");
-});
+// app.post("/updateTodo", async (req, res) => {
+//   const todo = req.body;
+//   await TodoModel.findByIdAndUpdate(
+//     todo._id,
+//     { status: "Completed" },
+//     { merge: true }
+//   );
+//   res.send("Todo updated");
+// });
 
-app.post("/deleteTodo", async (req, res) => {
-  const todo = req.body;
-  await TodoModel.findByIdAndDelete(todo._id);
-  res.send("Todo Deleted");
-});
+// app.post("/deleteTodo", async (req, res) => {
+//   const todo = req.body;
+//   await TodoModel.findByIdAndDelete(todo._id);
+//   res.send("Todo Deleted");
+// });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/todo", todoRoutes)
 
 app.listen(PORT, () => {
   console.log(" Server running on port", PORT);
